@@ -24,7 +24,7 @@ def main(cfg, writer, logger):
     device = torch.device(cfg["training"]["device"])
 
     # Setup Dataloader
-    data_path = "../sample_mixup" # cfg["data"]["path"]
+    data_path = "/home/zhiyuan/files/BuildingHeight/sample_mixup" # cfg["data"]["path"]
     n_classes = cfg["data"]["n_class"]
     n_maxdisp = cfg["data"]["n_maxdisp"]
     batch_size = cfg["training"]["batch_size"]
