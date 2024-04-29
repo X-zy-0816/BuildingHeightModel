@@ -15,4 +15,4 @@ training:
     learning_rate: 0.001
     resume: ''
     device: 'cuda'
-savepath: '/home/zhiyuan/files/BuildingHeight/test/BuildingHeightModel/pred'
+savepath: '/home/zhiyuan/files/BuildingHeight/ExperimentData'

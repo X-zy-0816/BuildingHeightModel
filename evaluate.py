@@ -52,9 +52,14 @@ def main(cfg, writer, logger):
 
     model.eval()
 
+
+    respath = os.path.join(cfg["savepath"],'pred')
+    respath = create_folder_with_incrementing_number(respath)
+
+
     for idx, imgpath in enumerate(valimg[0:20]):
         name = os.path.basename(vallab[idx])
-        respath = os.path.join(cfg["savepath"],'pred'+name)
+
         y_true = tif.imread(vallab[idx])
         y_true = y_true.astype(np.int16)*3
         # random crop: test and train is the same
@@ -88,11 +93,14 @@ def main(cfg, writer, logger):
         y_seg = np.argmax(y_seg.squeeze(), axis=0) # C H W=>  H W
         precision, recall, f1score = metricsperclass(y_true, y_seg, value=1) #
         print('rmse: %.3f, segerror: ua %.3f, pa %.3f, f1 %.3f'%(rmse, precision, recall, f1score))
+        
 
-        tif.imwrite((os.path.join(cfg["savepath"],'mux'+name)), mux)
-        tif.imwrite( (os.path.join(cfg["savepath"], 'ref' + name)), y_true)
-        tif.imwrite( (os.path.join(cfg["savepath"], 'pred' + name)), y_pred)
-        tif.imwrite((os.path.join(cfg["savepath"], 'seg' + name)), y_seg.astype(np.uint8))
+
+
+        tif.imwrite((os.path.join(respath,'mux'+name)), mux)
+        tif.imwrite( (os.path.join(respath, 'ref' + name)), y_true)
+        tif.imwrite( (os.path.join(respath, 'pred' + name)), y_pred)
+        tif.imwrite((os.path.join(respath, 'seg' + name)), y_seg.astype(np.uint8))
 
         #
         # color encode: change to the
@@ -123,6 +131,21 @@ def gray2rgb(image):
     res[ :, :, 1] = image.copy()
     res[ :, :, 2] = image.copy()
     return res
+
+
+def create_folder_with_incrementing_number(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path, exist_ok=True)
+        return folder_path
+ 
+    i = 1
+    while True:
+        new_folder_path = f"{folder_path}_{i}"
+        if not os.path.exists(new_folder_path):
+            os.makedirs(new_folder_path, exist_ok=True)
+            return new_folder_path
+        i += 1
+
 
 
 def metrics(y_true, y_pred, ignorevalue=0):
