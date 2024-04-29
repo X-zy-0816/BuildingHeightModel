@@ -24,7 +24,7 @@ def main(cfg, writer, logger):
     device = torch.device(cfg["training"]["device"])
 
     # Setup Dataloader
-    data_path = "sample" # cfg["data"]["path"]
+    data_path = "sample_mixup" # cfg["data"]["path"]
     n_classes = cfg["data"]["n_class"]
     n_maxdisp = cfg["data"]["n_maxdisp"]
     batch_size = cfg["training"]["batch_size"]
@@ -36,11 +36,9 @@ def main(cfg, writer, logger):
 
     # Setup Model
     model = get_model(cfg["model"], n_maxdisp=n_maxdisp, n_classes=n_classes).to(device)
-    if torch.cuda.device_count() > 1:
-        model = torch.nn.DataParallel(model, device_ids=range(torch.cuda.device_count()))
-
     #resume = cfg["training"]["resume"]
-    resume = r'runs\tlcnetu_zy3bh\V1\finetune.tar'
+    resume = r'runs/tlcnetu_zy3bh/V1/finetune_798.tar'
+
     if os.path.isfile(resume):
         print("=> loading checkpoint '{}'".format(resume))
         checkpoint = torch.load(resume)
@@ -91,10 +89,10 @@ def main(cfg, writer, logger):
         precision, recall, f1score = metricsperclass(y_true, y_seg, value=1) #
         print('rmse: %.3f, segerror: ua %.3f, pa %.3f, f1 %.3f'%(rmse, precision, recall, f1score))
 
-        tif.imsave((os.path.join(cfg["savepath"],'mux'+name)), mux)
-        tif.imsave( (os.path.join(cfg["savepath"], 'ref' + name)), y_true)
-        tif.imsave( (os.path.join(cfg["savepath"], 'pred' + name)), y_pred)
-        tif.imsave((os.path.join(cfg["savepath"], 'seg' + name)), y_seg.astype(np.uint8))
+        tif.imwrite((os.path.join(cfg["savepath"],'mux'+name)), mux)
+        tif.imwrite( (os.path.join(cfg["savepath"], 'ref' + name)), y_true)
+        tif.imwrite( (os.path.join(cfg["savepath"], 'pred' + name)), y_pred)
+        tif.imwrite((os.path.join(cfg["savepath"], 'seg' + name)), y_seg.astype(np.uint8))
 
         #
         # color encode: change to the
@@ -190,7 +188,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with open(args.config) as fp:
-        cfg = yaml.load(fp)
+        cfg = yaml.load(fp, Loader = yaml.FullLoader)
+
 
     #run_id = random.randint(1, 100000)
     logdir = os.path.join("runs", os.path.basename(args.config)[:-4], "V1")

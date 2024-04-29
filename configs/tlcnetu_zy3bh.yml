@@ -6,12 +6,13 @@ data:
     val_split: val
     img_rows: 400
     img_cols: 'same'
-    path: D:\yinxcao\height\sample
+    path: /home/zhiyuan/files/BuildingHeight/test/BuildingHeightModel/sample_mixup
     n_class: 1
     n_maxdisp: 192
 training:
-    epochs: 300
+    epochs: 1600
     batch_size: 16
     learning_rate: 0.001
     resume: ''
     device: 'cuda'
+savepath: '/home/zhiyuan/files/BuildingHeight/test/BuildingHeightModel/pred'
