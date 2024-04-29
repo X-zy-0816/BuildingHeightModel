@@ -24,7 +24,7 @@ def main(cfg, writer, logger):
     device = torch.device(cfg["training"]["device"])
 
     # Setup Dataloader
-    data_path = "sample_mixup" # cfg["data"]["path"]
+    data_path = "../sample_mixup" # cfg["data"]["path"]
     n_classes = cfg["data"]["n_class"]
     n_maxdisp = cfg["data"]["n_maxdisp"]
     batch_size = cfg["training"]["batch_size"]
@@ -37,7 +37,7 @@ def main(cfg, writer, logger):
     # Setup Model
     model = get_model(cfg["model"], n_maxdisp=n_maxdisp, n_classes=n_classes).to(device)
     #resume = cfg["training"]["resume"]
-    resume = r'runs/tlcnetu_zy3bh/V1/finetune_798.tar'
+    resume = r'runs/tlcnetu_zy3bh/finetune.tar'
 
     if os.path.isfile(resume):
         print("=> loading checkpoint '{}'".format(resume))
