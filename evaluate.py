@@ -37,7 +37,7 @@ def main(cfg, writer, logger):
     # Setup Model
     model = get_model(cfg["model"], n_maxdisp=n_maxdisp, n_classes=n_classes).to(device)
     #resume = cfg["training"]["resume"]
-    resume = r'runs/tlcnetu_zy3bh/finetune.tar'
+    resume = r'runs/tlcnetu_zy3bh/finetune_1598.tar'
 
     if os.path.isfile(resume):
         print("=> loading checkpoint '{}'".format(resume))

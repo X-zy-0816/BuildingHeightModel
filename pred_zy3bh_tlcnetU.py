@@ -39,7 +39,7 @@ def main():
 
     # print the model
     start_epoch = 0
-    resume = r'runs\tlcnetu_zy3bh\V1\finetune_298.tar'
+    resume = r'runs/tlcnetu_zy3bh/finetune.tar'
     if os.path.isfile(resume):
         print("=> loading checkpoint '{}'".format(resume))
         checkpoint = torch.load(resume)
